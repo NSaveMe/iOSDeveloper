@@ -14,7 +14,7 @@ protocol SettingsViewControllerDelegate: AnyObject {
 class SettingsViewController: UIViewController {
     weak var delegate: SettingsViewControllerDelegate?
     
-    var userName: String?
+//    var userName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
