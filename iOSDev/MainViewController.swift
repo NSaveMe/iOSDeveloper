@@ -13,65 +13,26 @@ protocol ViewControllerDelegate: AnyObject {
 }
 
 class MainViewController: UIViewController, ViewControllerDelegate {
-    
     func setLabelText(text: String) {
-        self.nameLabel.text = text
-        self.surnameLabel.text = text
+        self.nameSurnameLabel.text = text
     }
     
     func setTitle(title: String) {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Профиль"
-        view.backgroundColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
-        view.addSubview(profileImage)
-        view.addSubview(nameLabel)
-        view.addSubview(surnameLabel)
-        view.addSubview(settingsBtnLabel)
-        view.addSubview(someViewInCenter)
-        view.addSubview(imageView)
-        view.addSubview(someViewLeft)
-        view.addSubview(someViewRight)
-        someViewLeft.addSubview(friendsCountLabel)
-        someViewLeft.addSubview(friendsCountTxtLabel)
-        someViewInCenter.addSubview(subsCountLabel)
-        someViewInCenter.addSubview(subsCountTxtLabel)
-        someViewRight.addSubview(favoriteCountLabel)
-        someViewRight.addSubview(favoriteCountTxtLabel)
-        
-    }
-    
     lazy var profileImage: UIImageView = {
         let image = UIImageView(image: UIImage(named: "profileImage"))
-        image.frame.size = CGSize(width: 100, height: 100)
-        image.center.x = view.center.x
-        image.frame.origin.y = view.frame.origin.y + 172
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.layer.cornerRadius = 50
+        image.clipsToBounds = true
         return image
     }()
     
-    lazy var nameLabel: UILabel = {
+    lazy var nameSurnameLabel: UILabel = {
         let label = UILabel()
-        label.frame.size = CGSize(width: 300, height: 25)
-        label.center.x = view.center.x - 35
-        label.frame.origin.y = profileImage.center.y + 50
-        label.text = "Имя"
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        return label
-    }()
-    
-    lazy var surnameLabel: UILabel = {
-        let label = UILabel()
-        label.frame.size = CGSize(width: 300, height: 25)
-        label.center.x = view.center.x + 35
-        label.frame.origin.y = profileImage.center.y + 50
-        label.text = "Фамилия"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Имя Фамилия"
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -79,135 +40,218 @@ class MainViewController: UIViewController, ViewControllerDelegate {
     }()
     
     lazy var settingsBtnLabel: UIButton = {
-        let settingsLabel = UIButton()
-        settingsLabel.frame.size = CGSize(width: 86, height: 19)
-        settingsLabel.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        settingsLabel.frame.origin.y = surnameLabel.frame.origin.y + surnameLabel.frame.size.height + 10
-        settingsLabel.center.x = view.center.x
-        settingsLabel.setTitle("Настройки", for: .normal)
-        settingsLabel.setTitleColor(.blue, for: .normal)
-        settingsLabel.addTarget(self, action: #selector(settingsBtnLabelTapped), for: .touchUpInside)
-        return settingsLabel
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitle("Настройки", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(settingsBtnLabelTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var stackViewContainer: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        return stackView
     }()
     
     lazy var someViewLeft: UIView = {
         let view = UIView()
-        view.frame.size = CGSize(width: 109, height: 79)
-        view.frame.origin.x = 10
-        view.frame.origin.y = settingsBtnLabel.frame.origin.y + settingsBtnLabel.frame.size.height + 31
         view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
         view.layer.cornerRadius = 10
-        
-        
         return view
     }()
     
+    lazy var friendsCountStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        return stackView
+    }()
+    
     lazy var friendsCountLabel: UILabel = {
-        let viewLabel = UILabel()
-        viewLabel.text = "10"
-        viewLabel.frame = someViewLeft.bounds
-        viewLabel.frame.origin.x = viewLabel.frame.origin.x + 10
-        viewLabel.frame.origin.y = viewLabel.frame.origin.y - 10
-        viewLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        return viewLabel
+        let label = UILabel()
+        label.text = "10"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
     }()
     
     lazy var friendsCountTxtLabel: UILabel = {
-        let friendCountTxt = UILabel()
-        friendCountTxt.text = "Друзей"
-        friendCountTxt.frame = someViewLeft.bounds
-        friendCountTxt.frame.origin.x = friendCountTxt.frame.origin.x + 10
-        friendCountTxt.frame.origin.y = friendCountTxt.frame.origin.y + 10
-        
-        return friendCountTxt
+        let label = UILabel()
+        label.text = "Друзей"
+        return label
     }()
     
     lazy var someViewInCenter: UIView = {
         let view = UIView()
-        view.frame.size = CGSize(width: 109, height: 79)
-        view.center.x = self.view.center.x
-        view.frame.origin.y = settingsBtnLabel.frame.origin.y + settingsBtnLabel.frame.size.height + 31
         view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
         view.layer.cornerRadius = 10
         return view
     }()
     
+    lazy var subsCountStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        return stackView
+    }()
+    
     lazy var subsCountLabel: UILabel = {
-        let viewLabel = UILabel()
-        viewLabel.text = "20"
-        viewLabel.frame = someViewInCenter.bounds
-        viewLabel.frame.origin.x = viewLabel.frame.origin.x + 10
-        viewLabel.frame.origin.y = viewLabel.frame.origin.y - 10
-        viewLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        return viewLabel
+        let label = UILabel()
+        label.text = "20"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
     }()
     
     lazy var subsCountTxtLabel: UILabel = {
-        let friendCountTxt = UILabel()
-        friendCountTxt.text = "Подписок"
-        friendCountTxt.frame = someViewInCenter.bounds
-        friendCountTxt.frame.origin.x = friendCountTxt.frame.origin.x + 10
-        friendCountTxt.frame.origin.y = friendCountTxt.frame.origin.y + 10
-        
-        return friendCountTxt
+        let label = UILabel()
+        label.text = "Подписок"
+        return label
     }()
     
     lazy var someViewRight: UIView = {
         let view = UIView()
-        view.frame.size = CGSize(width: 109, height: 79)
-        view.frame.origin.x = self.view.frame.width - 119
-        view.frame.origin.y = settingsBtnLabel.frame.origin.y + settingsBtnLabel.frame.size.height + 31
         view.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
         view.layer.cornerRadius = 10
         return view
     }()
     
+    lazy var favoriteCountStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        return stackView
+    }()
+    
     lazy var favoriteCountLabel: UILabel = {
-        let viewLabel = UILabel()
-        viewLabel.text = "30"
-        viewLabel.frame = someViewRight.bounds
-        viewLabel.frame.origin.x = viewLabel.frame.origin.x + 10
-        viewLabel.frame.origin.y = viewLabel.frame.origin.y - 10
-        viewLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        return viewLabel
+        let label = UILabel()
+        label.text = "30"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
     }()
     
     lazy var favoriteCountTxtLabel: UILabel = {
-        let favoriteCountTxt = UILabel()
-        favoriteCountTxt.text = "Избранных"
-        favoriteCountTxt.frame = someViewRight.bounds
-        favoriteCountTxt.frame.origin.x = favoriteCountTxt.frame.origin.x + 10
-        favoriteCountTxt.frame.origin.y = favoriteCountTxt.frame.origin.y + 10
-        favoriteCountTxt.font = UIFont.systemFont(ofSize: 16)
-        
-        return favoriteCountTxt
+        let label = UILabel()
+        label.text = "Избранных"
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
     }()
     
     lazy var imageView: UIImageView = {
         let image = UIImageView(image: UIImage(named: "Image"))
-        image.frame.size = CGSize(width: 369, height: 332)
-        image.center.x = view.center.x
-        image.center.y = someViewInCenter.center.y + 231
+        image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 20
+        image.clipsToBounds = true
         return image
     }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Профиль"
+        view.backgroundColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = true
+        stackViewContainer.distribution = .fillEqually
+
+        setupViews()
+        setupConstraints()
+    }
+    
+    func setupViews() {
+        view.addSubview(profileImage)
+        view.addSubview(nameSurnameLabel)
+        view.addSubview(settingsBtnLabel)
+        view.addSubview(stackViewContainer)
+        stackViewContainer.addArrangedSubview(someViewLeft)
+        someViewLeft.addSubview(friendsCountStackView)
+        stackViewContainer.addArrangedSubview(someViewInCenter)
+        someViewInCenter.addSubview(subsCountStackView)
+        stackViewContainer.addArrangedSubview(someViewRight)
+        someViewRight.addSubview(favoriteCountStackView)
+        view.addSubview(imageView)
+        
+        friendsCountStackView.addArrangedSubview(friendsCountLabel)
+        friendsCountStackView.addArrangedSubview(friendsCountTxtLabel)
+        
+        subsCountStackView.addArrangedSubview(subsCountLabel)
+        subsCountStackView.addArrangedSubview(subsCountTxtLabel)
+        
+        favoriteCountStackView.addArrangedSubview(favoriteCountLabel)
+        favoriteCountStackView.addArrangedSubview(favoriteCountTxtLabel)
+    }
+    
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            // Констрейнты для profileImage
+            profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            profileImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            profileImage.widthAnchor.constraint(equalToConstant: 100),
+            profileImage.heightAnchor.constraint(equalToConstant: 100),
+            
+            // Констрейнты для nameSurnameLabel
+            nameSurnameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: -10),
+            nameSurnameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nameSurnameLabel.widthAnchor.constraint(equalToConstant: 300),
+            nameSurnameLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            // Констрейнты для settingsBtnLabel
+            settingsBtnLabel.topAnchor.constraint(equalTo: nameSurnameLabel.bottomAnchor, constant: -10),
+            settingsBtnLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            settingsBtnLabel.widthAnchor.constraint(equalToConstant: 86),
+            settingsBtnLabel.heightAnchor.constraint(equalToConstant: 19),
+            
+            // Констрейнты для stackViewContainer
+            stackViewContainer.topAnchor.constraint(equalTo: settingsBtnLabel.bottomAnchor, constant: 10),
+            stackViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            stackViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            stackViewContainer.heightAnchor.constraint(equalToConstant: 80),
+            stackViewContainer.widthAnchor.constraint(equalTo: stackViewContainer.heightAnchor, multiplier: 2.0),
+
+            // Констрейнты для imageView
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: stackViewContainer.bottomAnchor, constant: 20),
+            imageView.widthAnchor.constraint(equalToConstant: 369),
+            imageView.heightAnchor.constraint(equalToConstant: 332),
+
+//            stackViewContainer.topAnchor.constraint(equalTo: settingsBtnLabel.bottomAnchor, constant: 10),
+//            stackViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+//            stackViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+//
+//            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            imageView.topAnchor.constraint(equalTo: subsCountTxtLabel.bottomAnchor, constant: 20),
+//            imageView.widthAnchor.constraint(equalToConstant: 369),
+//            imageView.heightAnchor.constraint(equalToConstant: 332),
+            
+            // Констрейнты для friendsCountStackView
+            friendsCountStackView.leadingAnchor.constraint(equalTo: someViewLeft.leadingAnchor, constant: 10),
+            friendsCountStackView.topAnchor.constraint(equalTo: someViewLeft.topAnchor, constant: 10),
+            friendsCountStackView.trailingAnchor.constraint(equalTo: someViewLeft.trailingAnchor, constant: -10),
+            
+            // Констрейнты для subsCountStackView
+            subsCountStackView.leadingAnchor.constraint(equalTo: someViewInCenter.leadingAnchor, constant: 10),
+            subsCountStackView.topAnchor.constraint(equalTo: someViewInCenter.topAnchor, constant: 10),
+            subsCountStackView.trailingAnchor.constraint(equalTo: someViewInCenter.trailingAnchor, constant: -10),
+            
+            // Констрейнты для favoriteCountStackView
+            favoriteCountStackView.leadingAnchor.constraint(equalTo: someViewRight.leadingAnchor, constant: 10),
+            favoriteCountStackView.topAnchor.constraint(equalTo: someViewRight.topAnchor, constant: 10),
+            favoriteCountStackView.trailingAnchor.constraint(equalTo: someViewRight.trailingAnchor, constant: -10),
+        ])
+    }
     
     @objc func settingsBtnLabelTapped() {
         let settingsVC = SettingsViewController()
         settingsVC.delegate = self
-        self.navigationController?.pushViewController(settingsVC, animated: true)
+        navigationController?.pushViewController(settingsVC, animated: true)
     }
-    
 }
-
-
 
 extension MainViewController: SettingsViewControllerDelegate {
     func updateProfileData(name: String, surname: String) {
-        nameLabel.text = name
-        surnameLabel.text = surname
+        nameSurnameLabel.text = "\(name) \(surname)"
     }
 }
