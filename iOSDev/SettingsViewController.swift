@@ -18,22 +18,20 @@ class SettingsViewController: UIViewController {
     var surnameTextField: UITextField!
 
     lazy var textLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        label.text = "Введите новые данные"
-        return label
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.textColor = .black
+        $0.textAlignment = .left
+        $0.numberOfLines = 0
+        $0.text = "Введите новые данные"
+        return $0
+    }(UILabel())
     
     lazy var someView: UIView = {
-        let someViewRectangle = UIView()
-        someViewRectangle.translatesAutoresizingMaskIntoConstraints = false
-        someViewRectangle.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
-        someViewRectangle.layer.cornerRadius = 20
-        return someViewRectangle
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+        $0.layer.cornerRadius = 20
+        return $0
+    }(UIView())
     
     // Cоздание текстового поля
     func createTF(placeholder: String, offsetY: CGFloat = 0) -> UITextField {
@@ -67,18 +65,17 @@ class SettingsViewController: UIViewController {
     }
     
     lazy var createBtn: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Сохранить", for: .normal)
-        btn.layer.cornerRadius = 30
-        btn.backgroundColor = .black
-        btn.addTarget(self, action: #selector(buttonTouchUpInside), for: .touchUpInside)
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("Сохранить", for: .normal)
+        $0.layer.cornerRadius = 30
+        $0.backgroundColor = .black
+        $0.addTarget(self, action: #selector(buttonTouchUpInside), for: .touchUpInside)
         
-        btn.addTarget(self, action: #selector(buttonTouchDown(_:)), for: .touchDown)
-        btn.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
-        btn.addTarget(self, action: #selector(buttonTouchUpOutside(_:)), for: .touchUpOutside)
-        return btn
-    }()
+        $0.addTarget(self, action: #selector(buttonTouchDown(_:)), for: .touchDown)
+        $0.addTarget(self, action: #selector(buttonTouchUpInside(_:)), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(buttonTouchUpOutside(_:)), for: .touchUpOutside)
+        return $0
+    }(UIButton())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,7 +150,7 @@ class SettingsViewController: UIViewController {
             navigationController?.popViewController(animated: true) // Дублирование кода для TF
         }
     
-    @objc func buttonTouchUpOutside(_ sender: UIButton) {
+    @objc func buttonTouchUpOutside             (_ sender: UIButton) {
         print("Вы отменили нажатии кнопки: \(String(describing: sender.titleLabel?.text))")
         UIView.animate(withDuration: 0.1) {
             sender.transform = .identity
