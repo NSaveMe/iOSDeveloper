@@ -16,7 +16,7 @@ class MainViewController: UIViewController, ViewControllerDelegate {
     func setLabelText(text: String) {
         self.nameSurnameLabel.text = text
     }
-    
+     
     func setTitle(title: String) {
         
     }
